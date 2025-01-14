@@ -1,11 +1,10 @@
-// Importing necessary modules from mongoose
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 // Interface representing a User document in MongoDB
 export interface IUser extends Document {
     username: string;
     email: string;
-    friends: string[];
+    friends: mongoose.Schema.Types.ObjectId[];
 }
 
 // Schema definition for User collection
@@ -14,26 +13,49 @@ const UserSchema: Schema<IUser> = new Schema({
         type: String,
         required: true,
         unique: true,
+        trim: true,
     },
     email: {
         type: String,
         required: true,
         unique: true,
+        match: [/.+@.+\..+/, 'Must match an email address!'],
     },
-    friends: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-    }],
+    friends: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+    ],
 });
 
 // Creating a Mongoose model for User
 export const User = mongoose.model<IUser>('User', UserSchema);
 
+// Interface representing a Reaction document in MongoDB
+export interface IReaction extends Document {
+    content: string;
+    author: Schema.Types.ObjectId;
+}
+
+// Schema definition for Reaction collection
+const ReactionSchema: Schema<IReaction> = new Schema({
+    content: {
+        type: String,
+        required: true,
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+});
+
 // Interface representing a Thought document in MongoDB
 export interface IThought extends Document {
     content: string;
-    author: string;
-    reactions: string[];
+    author: Schema.Types.ObjectId;
+    reactions: IReaction[];
 }
 
 // Schema definition for Thought collection
@@ -47,9 +69,7 @@ const ThoughtSchema: Schema<IThought> = new Schema({
         ref: 'User',
         required: true,
     },
-    reactions: [{
-        type: String,
-    }],
+    reactions: [ReactionSchema],
 });
 
 // Creating a Mongoose model for Thought
