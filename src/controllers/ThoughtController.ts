@@ -9,7 +9,7 @@ class ThoughtController {
             await thought.save();
             res.status(201).json(thought);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
         }
     }
 
@@ -21,7 +21,7 @@ class ThoughtController {
             }
             res.json(thought);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
         }
     }
 
@@ -33,7 +33,7 @@ class ThoughtController {
             }
             res.json(thought);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
         }
     }
 
@@ -45,7 +45,16 @@ class ThoughtController {
             }
             res.json({ message: 'Thought deleted' });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
+        }
+    }
+
+    static async reactToThought(req: Request, res: Response) {
+        try {
+            await reactToThought(req.params.thoughtId, req.body.content, req.body.authorId);
+            res.json({ message: 'Reaction added' });
+        } catch (error) {
+            res.status(400).json({ error: (error as any).message });
         }
     }
 }
