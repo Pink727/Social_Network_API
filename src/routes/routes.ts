@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import UserController from '../controllers/index';
-import ThoughtController from '../controllers/index';
+import UserController from '../controllers/controllers';
+import ThoughtController from '../controllers/controllers';
 
 const router = Router();
 

@@ -1,5 +1,5 @@
-import { User } from '../models';
-import { Thought } from '../models';
+import { User } from '../models/models';
+import { Thought } from '../models/models';
 
 export const addFriend = async (userId: string, friendId: string) => {
     const user = await User.findById(userId);
