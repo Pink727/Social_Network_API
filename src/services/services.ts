@@ -12,7 +12,7 @@ export const addFriend = async (userId: string, friendId: string) => {
 export const removeFriend = async (userId: string, friendId: string) => {
     const user = await User.findById(userId);
     if (user) {
-        user.friends = user.friends.filter(friend => friend !== friendId);
+        user.friends = user.friends.filter((friend: string) => friend !== friendId);
         await user.save();
     }
 };

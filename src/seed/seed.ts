@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { User, Thought } from './models';
+import { User, Thought } from '../models';
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/socialNetwork', {
