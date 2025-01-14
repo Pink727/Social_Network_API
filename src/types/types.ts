@@ -17,3 +17,8 @@ export interface Reaction {
     content: string;
     author: string;
 }
+
+export interface IReaction {
+    content: string;
+    author: string;
+}
