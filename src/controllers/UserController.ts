@@ -9,7 +9,7 @@ class UserController {
             await user.save();
             res.status(201).json(user);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
         }
     }
 
@@ -21,7 +21,7 @@ class UserController {
             }
             res.json(user);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
         }
     }
 
@@ -33,7 +33,7 @@ class UserController {
             }
             res.json(user);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
         }
     }
 
@@ -45,7 +45,34 @@ class UserController {
             }
             res.json({ message: 'User deleted' });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: (error as any).message });
+        }
+    }
+
+    static async addFriend(req: Request, res: Response) {
+        try {
+            await addFriend(req.params.userId, req.params.friendId);
+            res.json({ message: 'Friend added' });
+        } catch (error) {
+            res.status(400).json({ error: (error as any).message });
+        }
+    }
+
+    static async removeFriend(req: Request, res: Response) {
+        try {
+            await removeFriend(req.params.userId, req.params.friendId);
+            res.json({ message: 'Friend removed' });
+        } catch (error) {
+            res.status(400).json({ error: (error as any).message });
+        }
+    }
+
+    static async getAllUsers(req: Request, res: Response) {
+        try {
+            const users = await User.find();
+            res.json(users);
+        } catch (error) {
+            res.status(400).json({ error: (error as any).message });
         }
     }
 }
