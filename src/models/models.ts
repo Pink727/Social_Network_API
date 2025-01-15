@@ -32,29 +32,34 @@ const UserSchema: Schema<IUser> = new Schema({
 // Creating a Mongoose model for User
 export const User = mongoose.model<IUser>('User', UserSchema);
 
-// Interface representing a Reaction document in MongoDB
+// Interface representing a Reaction subdocument in MongoDB
 export interface IReaction extends Document {
     content: string;
-    author: Schema.Types.ObjectId;
+    author: mongoose.Schema.Types.ObjectId;
+    createdAt: Date;
 }
 
-// Schema definition for Reaction collection
+// Schema definition for Reaction subdocument
 const ReactionSchema: Schema<IReaction> = new Schema({
     content: {
         type: String,
         required: true,
     },
     author: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
     },
 });
 
 // Interface representing a Thought document in MongoDB
 export interface IThought extends Document {
     content: string;
-    author: Schema.Types.ObjectId;
+    author: mongoose.Schema.Types.ObjectId;
     reactions: IReaction[];
 }
 
@@ -65,7 +70,7 @@ const ThoughtSchema: Schema<IThought> = new Schema({
         required: true,
     },
     author: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
@@ -74,3 +79,4 @@ const ThoughtSchema: Schema<IThought> = new Schema({
 
 // Creating a Mongoose model for Thought
 export const Thought = mongoose.model<IThought>('Thought', ThoughtSchema);
+export const Reaction = mongoose.model<IReaction>('Reaction', ReactionSchema);

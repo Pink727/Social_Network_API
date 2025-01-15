@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
-import { Thought } from '../models/models';
-import { reactToThought } from '../services/services';
+import { Thought, IReaction } from '../models/models';
 
 class ThoughtController {
     static async createThought(req: Request, res: Response) {
         try {
-            const thought = new Thought(req.body);
+            const thought = new Thought({
+                content: req.body.content,
+                author: req.body.author
+            });
             await thought.save();
             res.status(201).json(thought);
         } catch (error) {
@@ -43,20 +45,34 @@ class ThoughtController {
             if (!thought) {
                 return res.status(404).json({ error: 'Thought not found' });
             }
-            res.json({ message: 'Thought deleted' });
+            res.status(204).json();
         } catch (error) {
             res.status(400).json({ error: (error as any).message });
         }
     }
 
-    static async reactToThought(req: Request, res: Response) {
+    static async addReaction(req: Request, res: Response) {
         try {
-            await reactToThought(req.params.thoughtId, req.body.content, req.body.authorId);
-            res.json({ message: 'Reaction added' });
+            const thought = await Thought.findById(req.params.id);
+            if (!thought) {
+                return res.status(404).json({ error: 'Thought not found' });
+            }
+
+            const reaction: IReaction = {
+                content: req.body.reaction,
+                author: req.body.authorId,
+                createdAt: new Date()
+            } as IReaction;
+
+            thought.reactions.push(reaction);
+            await thought.save();
+
+            const updatedThought = await Thought.findById(req.params.id).populate('author reactions.author');
+            res.status(201).json(updatedThought);
         } catch (error) {
             res.status(400).json({ error: (error as any).message });
         }
     }
 }
 
-export { ThoughtController };
+export default ThoughtController;

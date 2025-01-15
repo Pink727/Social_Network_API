@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/UserController';
-import { ThoughtController } from '../controllers/ThoughtController';
+import ThoughtController from '../controllers/ThoughtController';
 import { addFriend, removeFriend, reactToThought } from '../services/services';
 
 const router = Router();
@@ -38,14 +38,7 @@ export const setRoutes = () => {
     });
 
     // Reaction routes
-    router.post('/thoughts/:id/reactions', async (req, res) => {
-        try {
-            await reactToThought(req.params.id, req.body.reaction, req.body.authorId);
-            res.status(200).json({ message: 'Reaction added' });
-        } catch (error) {
-            res.status(400).json({ error: (error as any).message });
-        }
-    });
+    router.put('/thoughts/:id/reactions', ThoughtController.addReaction);
 
     return router;
 };
