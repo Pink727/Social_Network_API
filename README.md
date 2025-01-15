@@ -17,6 +17,7 @@ This project is a Social Network API built using TypeScript, Express.js, and Mon
 - [Contributing](#contributing)
 - [License](#license)
 - [Questions](#questions)
+- [Video](#video)
 
 
 ## Technologies Used
