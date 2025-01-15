@@ -1,7 +1,8 @@
+// Import necessary modules and models
 import { ObjectId } from 'mongoose';
 import { User, Thought } from '../models/models';
-import { IReaction } from '../types/types';
 
+// Function to add a friend to a user's friend list
 export const addFriend = async (userId: string, friendId: string) => {
     const user = await User.findById(userId);
     if (user && !user.friends.includes(friendId as unknown as ObjectId)) {
@@ -10,6 +11,7 @@ export const addFriend = async (userId: string, friendId: string) => {
     }
 };
 
+// Function to remove a friend from a user's friend list
 export const removeFriend = async (userId: string, friendId: string) => {
     const user = await User.findById(userId);
     if (user) {
@@ -18,6 +20,7 @@ export const removeFriend = async (userId: string, friendId: string) => {
     }
 };
 
+// Function to add a reaction to a thought
 export const reactToThought = async (thoughtId: string, reactionContent: string, authorId: string) => {
     const thought = await Thought.findById(thoughtId);
     if (thought) {
