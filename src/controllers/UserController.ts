@@ -29,6 +29,16 @@ class UserController {
         }
     }
 
+    // Method to get all users
+    static async getAllUsers(req: Request, res: Response) {
+        try {
+            const users = await User.find().populate('friends');
+            res.json(users);
+        } catch (error) {
+            res.status(400).json({ error: (error as any).message });
+        }
+    }
+
     // Method to update a user by ID
     static async updateUser(req: Request, res: Response) {
         try {

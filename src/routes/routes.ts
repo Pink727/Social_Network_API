@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { UserController } from '../controllers/UserController';
+import UserController from '../controllers/UserController';
 import ThoughtController from '../controllers/ThoughtController';
 import { addFriend, removeFriend, reactToThought } from '../services/services';
 
@@ -11,7 +11,7 @@ export const setRoutes = () => {
     router.get('/users/:id', UserController.getUser);
     router.put('/users/:id', UserController.updateUser);
     router.delete('/users/:id', UserController.deleteUser);
-    router.get('/users', UserController.getAllUsers); // Add this line
+    router.get('/users', UserController.getAllUsers);
 
     // Thought routes
     router.post('/thoughts', ThoughtController.createThought);
