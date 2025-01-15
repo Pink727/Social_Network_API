@@ -31,7 +31,7 @@ This project is a Social Network API built using TypeScript, Express.js, and Mon
 
 For a detailed walkthrough of the project, please watch the following video:
 
-[Walkthrough Video](https://example.com/walkthrough-video)
+[Walkthrough Video](https://youtu.be/5CqB7W2NgWQ)
 
 
 ## Installation
