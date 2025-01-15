@@ -1,8 +1,11 @@
+// Import necessary modules and models
 import { Request, Response } from 'express';
 import { User } from '../models/models';
 import { addFriend, removeFriend } from '../services/services';
 
+// UserController class to handle user-related operations
 class UserController {
+    // Method to create a new user
     static async createUser(req: Request, res: Response) {
         try {
             const user = new User(req.body);
@@ -13,6 +16,7 @@ class UserController {
         }
     }
 
+    // Method to get a user by ID
     static async getUser(req: Request, res: Response) {
         try {
             const user = await User.findById(req.params.id).populate('friends');
@@ -25,6 +29,7 @@ class UserController {
         }
     }
 
+    // Method to update a user by ID
     static async updateUser(req: Request, res: Response) {
         try {
             const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -37,44 +42,39 @@ class UserController {
         }
     }
 
+    // Method to delete a user by ID
     static async deleteUser(req: Request, res: Response) {
         try {
             const user = await User.findByIdAndDelete(req.params.id);
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            res.json({ message: 'User deleted' });
+            res.json({ message: 'User deleted successfully' });
         } catch (error) {
             res.status(400).json({ error: (error as any).message });
         }
     }
 
+    // Method to add a friend to a user's friend list
     static async addFriend(req: Request, res: Response) {
         try {
-            await addFriend(req.params.userId, req.params.friendId);
-            res.json({ message: 'Friend added' });
+            const user = await addFriend(req.params.userId, req.params.friendId);
+            res.json(user);
         } catch (error) {
             res.status(400).json({ error: (error as any).message });
         }
     }
 
+    // Method to remove a friend from a user's friend list
     static async removeFriend(req: Request, res: Response) {
         try {
-            await removeFriend(req.params.userId, req.params.friendId);
-            res.json({ message: 'Friend removed' });
-        } catch (error) {
-            res.status(400).json({ error: (error as any).message });
-        }
-    }
-
-    static async getAllUsers(req: Request, res: Response) {
-        try {
-            const users = await User.find();
-            res.json(users);
+            const user = await removeFriend(req.params.userId, req.params.friendId);
+            res.json(user);
         } catch (error) {
             res.status(400).json({ error: (error as any).message });
         }
     }
 }
 
-export { UserController };
+// Export the UserController class
+export default UserController;
